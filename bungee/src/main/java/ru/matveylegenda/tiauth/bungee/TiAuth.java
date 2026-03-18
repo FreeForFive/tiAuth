@@ -24,7 +24,6 @@ import ua.nanit.limbo.server.LimboServer;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -210,9 +209,8 @@ public final class TiAuth extends Plugin {
                         MainConfig.IMP.database.minIdle
                 );
             }
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Error during database initialization", e);
-            System.out.println("[DEBUG] Stopping server");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error during database initialization. Stopping server...", e);
             getProxy().stop();
         }
     }
@@ -233,7 +231,7 @@ public final class TiAuth extends Plugin {
                         authServer
                 );
             } catch (Exception e) {
-                logger.log(Level.WARNING, "Error when starting the virtual server", e);
+                logger.log(Level.WARNING, "Error when starting the virtual server. Stopping server...", e);
                 getProxy().stop();
             }
         }

@@ -28,13 +28,12 @@ import ua.nanit.limbo.server.LimboServer;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
-import java.sql.SQLException;
 
 @Getter
 @Plugin(
         id = "tiauth",
         name = "tiAuth",
-        version = "1.3.1",
+        version = "1.3.2",
         authors = {"1050TI_top", "OverwriteMC"}
 )
 public final class TiAuth {
@@ -176,8 +175,8 @@ public final class TiAuth {
                         MainConfig.IMP.database.minIdle
                 );
             }
-        } catch (SQLException e) {
-            logger.error("Error during database initialization", e);
+        } catch (Exception e) {
+            logger.error("Error during database initialization. Stopping server...", e);
             server.shutdown();
         }
     }
@@ -200,7 +199,7 @@ public final class TiAuth {
                         )
                 );
             } catch (Exception e) {
-                logger.warn("Error when starting the virtual server", e);
+                logger.warn("Error when starting the virtual server. Stopping server...", e);
                 server.shutdown();
             }
         }
