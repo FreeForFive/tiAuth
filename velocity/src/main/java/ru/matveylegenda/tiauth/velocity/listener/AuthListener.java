@@ -1,5 +1,6 @@
 package ru.matveylegenda.tiauth.velocity.listener;
 
+import com.velocitypowered.api.event.EventTask;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
@@ -23,6 +24,7 @@ import ru.matveylegenda.tiauth.velocity.manager.TaskManager;
 import ru.matveylegenda.tiauth.velocity.storage.CachedComponents;
 import ru.matveylegenda.tiauth.velocity.util.VelocityUtils;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
 public class AuthListener {
@@ -42,13 +44,13 @@ public class AuthListener {
     }
 
     @Subscribe
-    public void onPreLogin(PreLoginEvent event) {
+    public EventTask onPreLogin(PreLoginEvent event) {
         String username = event.getUsername();
         String ip = event.getConnection().getRemoteAddress().getAddress().getHostAddress();
 
         if (!nickPattern.matcher(username).matches()) {
             event.setResult(PreLoginEvent.PreLoginComponentResult.denied(CachedComponents.IMP.player.kick.invalidNickPattern));
-            return;
+            return null;
         }
 
         if (BanCache.isBanned(ip)) {
@@ -56,25 +58,28 @@ public class AuthListener {
                     .match(VelocityUtils.TIME)
                     .replacement(String.valueOf(BanCache.getRemainingSeconds(ip))));
             event.setResult(PreLoginEvent.PreLoginComponentResult.denied(kickMessage));
-            return;
+            return null;
         }
 
         if (PremiumCache.isPremium(username)) {
             event.setResult(PreLoginEvent.PreLoginComponentResult.forceOnlineMode());
-            return;
+            return null;
         }
 
         int count = getPlayersCountByIp(ip);
         if (!MainConfig.IMP.excludedIps.contains(ip)) {
             if (count >= MainConfig.IMP.maxOnlineAccountsPerIp) {
                 event.setResult(PreLoginEvent.PreLoginComponentResult.denied(CachedComponents.IMP.player.kick.ipLimitOnlineReached));
-                return;
+                return null;
             }
         }
+
+        CompletableFuture<Void> future = new CompletableFuture<>();
 
         database.getAuthUserRepository().getUser(username, (user, success) -> {
             if (!success) {
                 event.setResult(PreLoginEvent.PreLoginComponentResult.denied(CachedComponents.IMP.queryError));
+                future.complete(null);
                 return;
             }
 
@@ -86,17 +91,26 @@ public class AuthListener {
                         } else {
                             event.setResult(PreLoginEvent.PreLoginComponentResult.allowed());
                         }
+
+                        future.complete(null);
                     });
                 } else {
                     event.setResult(PreLoginEvent.PreLoginComponentResult.allowed());
+                    future.complete(null);
                 }
             } else {
                 if (user.isPremium()) {
+                    event.setResult(PreLoginEvent.PreLoginComponentResult.forceOnlineMode());
                     PremiumCache.addPremium(username);
+                } else {
+                    event.setResult(PreLoginEvent.PreLoginComponentResult.allowed());
                 }
-                event.setResult(PreLoginEvent.PreLoginComponentResult.allowed());
+
+                future.complete(null);
             }
         });
+
+        return EventTask.resumeWhenComplete(future);
     }
 
     @Subscribe
