@@ -180,6 +180,8 @@ public class CachedComponents {
         public static class Title {
             public Component title;
             public Component subTitle;
+            public Component onAuthTitle;
+            public Component onAuthSubTitle;
         }
 
         public static class ActionBar {
@@ -306,6 +308,8 @@ public class CachedComponents {
         player.title = new Player.Title();
         player.title.title = LEGACY.deserialize(COLORIZER.colorize(getPrefixed(config.player.title.title, prefixRaw)));
         player.title.subTitle = LEGACY.deserialize(COLORIZER.colorize(getPrefixed(config.player.title.subTitle, prefixRaw)));
+        player.title.onAuthTitle = LEGACY.deserialize(COLORIZER.colorize(getPrefixed(config.player.title.onAuthTitle, prefixRaw)));
+        player.title.onAuthSubTitle = LEGACY.deserialize(COLORIZER.colorize(getPrefixed(config.player.title.onAuthSubTitle, prefixRaw)));
 
         player.actionBar = new Player.ActionBar();
         player.actionBar.message = LEGACY.deserialize(COLORIZER.colorize(getPrefixed(config.player.actionBar.message, prefixRaw)));

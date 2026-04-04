@@ -227,6 +227,7 @@ public class MainConfig extends YamlSerializable {
     @NewLine
     public static class Title {
         public boolean enabled = false;
+        public boolean enabledOnAuth = false;
     }
 
     public ActionBar actionBar;

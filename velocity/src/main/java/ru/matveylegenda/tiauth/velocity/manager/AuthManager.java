@@ -4,6 +4,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import ru.matveylegenda.tiauth.cache.AuthCache;
 import ru.matveylegenda.tiauth.cache.BanCache;
 import ru.matveylegenda.tiauth.cache.PremiumCache;
@@ -305,6 +306,16 @@ public class AuthManager {
 
             loginPlayer(player, () -> {
                 player.sendMessage(CachedComponents.IMP.player.login.success);
+
+                if (MainConfig.IMP.title.enabledOnAuth) {
+                    Title componentTitle = Title.title(
+                            CachedComponents.IMP.player.title.onAuthTitle,
+                            CachedComponents.IMP.player.title.onAuthSubTitle,
+                            0,
+                            21,
+                            0);
+                    player.showTitle(componentTitle);
+                }
 
                 loginAttempts.remove(name);
                 endProcess(name);

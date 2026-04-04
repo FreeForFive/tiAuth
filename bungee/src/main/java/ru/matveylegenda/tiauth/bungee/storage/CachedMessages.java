@@ -175,6 +175,8 @@ public class CachedMessages {
         public static class Title {
             public String title;
             public String subTitle;
+            public String onAuthTitle;
+            public String onAuthSubTitle;
         }
 
         public static class ActionBar {
@@ -299,6 +301,8 @@ public class CachedMessages {
         player.title = new Player.Title();
         player.title.title = COLORIZER.colorize(getPrefixed(config.player.title.title, prefix));
         player.title.subTitle = COLORIZER.colorize(getPrefixed(config.player.title.subTitle, prefix));
+        player.title.onAuthTitle = COLORIZER.colorize(getPrefixed(config.player.title.onAuthTitle, prefix));
+        player.title.onAuthSubTitle = COLORIZER.colorize(getPrefixed(config.player.title.onAuthSubTitle, prefix));
 
         player.actionBar = new Player.ActionBar();
         player.actionBar.message = COLORIZER.colorize(getPrefixed(config.player.actionBar.message, prefix));

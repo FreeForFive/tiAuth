@@ -1,6 +1,8 @@
 package ru.matveylegenda.tiauth.bungee.manager;
 
 import lombok.Setter;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -344,6 +346,21 @@ public class AuthManager {
                         player,
                         CachedMessages.IMP.player.login.success
                 );
+
+                if (MainConfig.IMP.title.enabledOnAuth) {
+                    Title title = ProxyServer.getInstance().createTitle();
+                    title.title(TextComponent.fromLegacy(
+                            CachedMessages.IMP.player.title.onAuthTitle
+                    ));
+                    title.subTitle(TextComponent.fromLegacy(
+                            CachedMessages.IMP.player.title.onAuthSubTitle
+                    ));
+                    title.fadeIn(0);
+                    title.stay(21);
+                    title.fadeOut(0);
+
+                    player.sendTitle(title);
+                }
 
                 loginAttempts.remove(player.getName());
                 endProcess(player);

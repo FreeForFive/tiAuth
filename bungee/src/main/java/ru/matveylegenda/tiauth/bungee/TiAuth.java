@@ -113,7 +113,7 @@ public final class TiAuth extends Plugin {
                 .version(MainConfig.IMP.libraries.postgresql.version)
                 .build();
 
-        String adventureVersion = "4.25.0";
+        String adventureVersion = "4.26.1";
 
         Library adventureApi = Library.builder()
                 .groupId("net.kyori")
@@ -130,6 +130,30 @@ public final class TiAuth extends Plugin {
         Library adventureLegacy = Library.builder()
                 .groupId("net.kyori")
                 .artifactId("adventure-text-serializer-legacy")
+                .version(adventureVersion)
+                .build();
+
+        Library adventureGson = Library.builder()
+                .groupId("net.kyori")
+                .artifactId("adventure-text-serializer-gson")
+                .version(adventureVersion)
+                .build();
+
+        Library adventureJson = Library.builder()
+                .groupId("net.kyori")
+                .artifactId("adventure-text-serializer-json")
+                .version(adventureVersion)
+                .build();
+
+        Library adventureJsonLegacyImpl = Library.builder()
+                .groupId("net.kyori")
+                .artifactId("adventure-text-serializer-json-legacy-impl")
+                .version(adventureVersion)
+                .build();
+
+        Library adventurePlain = Library.builder()
+                .groupId("net.kyori")
+                .artifactId("adventure-text-serializer-plain")
                 .version(adventureVersion)
                 .build();
 
@@ -166,6 +190,10 @@ public final class TiAuth extends Plugin {
         libraryManager.loadLibrary(adventureApi);
         libraryManager.loadLibrary(adventureMinimessage);
         libraryManager.loadLibrary(adventureLegacy);
+        libraryManager.loadLibrary(adventureGson);
+        libraryManager.loadLibrary(adventureJson);
+        libraryManager.loadLibrary(adventureJsonLegacyImpl);
+        libraryManager.loadLibrary(adventurePlain);
         libraryManager.loadLibrary(adventureNBT);
         libraryManager.loadLibrary(adventureKey);
         libraryManager.loadLibrary(kyoriExamination);

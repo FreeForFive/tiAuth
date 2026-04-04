@@ -214,6 +214,8 @@ public class MessagesConfig extends YamlSerializable {
         public static class Title {
             public String title;
             public String subTitle;
+            public String onAuthTitle;
+            public String onAuthSubTitle;
         }
 
         public static class ActionBar {
@@ -294,6 +296,8 @@ public class MessagesConfig extends YamlSerializable {
                 player.bossBar.message = "{prefix} &fОсталось &#8833EC{time} &fсекунд";
                 player.title.title = "{prefix}";
                 player.title.subTitle = "&fОсталось &#8833EC{time} &fсекунд";
+                player.title.onAuthTitle = "{prefix}";
+                player.title.onAuthSubTitle = "&fВы &#8833ECуспешно &fавторизовались";
                 player.actionBar.message = "{prefix} &fОсталось &#8833EC{time} &fсекунд";
             }
             case EN -> {
@@ -367,6 +371,8 @@ public class MessagesConfig extends YamlSerializable {
                 player.bossBar.message = "{prefix} &fTime remaining: &#8833EC{time} &fseconds";
                 player.title.title = "{prefix}";
                 player.title.subTitle = "&fTime remaining: &#8833EC{time} &fseconds";
+                player.title.onAuthTitle = "{prefix}";
+                player.title.onAuthSubTitle = "&fYou have &#8833ECsuccessfully &flogged in";
                 player.actionBar.message = "{prefix} &fTime remaining: &#8833EC{time} &fseconds";
             }
         }
