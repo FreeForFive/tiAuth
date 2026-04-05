@@ -6,6 +6,7 @@ import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
 import com.velocitypowered.api.event.connection.PreLoginEvent;
 import com.velocitypowered.api.event.player.GameProfileRequestEvent;
+import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import com.velocitypowered.api.event.player.ServerPreConnectEvent;
 import com.velocitypowered.api.proxy.Player;
@@ -120,9 +121,12 @@ public class AuthListener {
     }
 
     @Subscribe
-    public void onPostLogin(PostLoginEvent event) {
+    public EventTask onPlayerChooseInitialServer(PlayerChooseInitialServerEvent event) {
         Player player = event.getPlayer();
-        authManager.forceAuth(player);
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        authManager.forceAuth(player, event, future);
+        return EventTask.resumeWhenComplete(future);
     }
 
     @Subscribe

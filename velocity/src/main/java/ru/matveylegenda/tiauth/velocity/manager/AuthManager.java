@@ -1,5 +1,6 @@
 package ru.matveylegenda.tiauth.velocity.manager;
 
+import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import lombok.Setter;
@@ -21,7 +22,9 @@ import ru.matveylegenda.tiauth.velocity.storage.CachedComponents;
 import ru.matveylegenda.tiauth.velocity.util.VelocityUtils;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -455,47 +458,67 @@ public class AuthManager {
         });
     }
 
+    public void forceAuth(Player player) {
+        forceAuth(player, null, null);
+    }
+
     /**
      * Форсированный аутентификационный путь (для использования извне).
      */
-    public void forceAuth(Player player) {
+    public void forceAuth(Player player, PlayerChooseInitialServerEvent event, CompletableFuture<Void> future) {
         String name = player.getUsername();
 
         database.getAuthUserRepository().getUser(name, (user, success) -> {
-            if (!success) {
-                player.disconnect(CachedComponents.IMP.queryError);
-                return;
+            try {
+                if (!success) {
+                    player.disconnect(CachedComponents.IMP.queryError);
+                    return;
+                }
+
+                if (user != null && !player.getUsername().equals(user.getRealName())) {
+                    player.disconnect(CachedComponents.IMP.player.kick.realname
+                            .replaceText(builder -> builder
+                                    .match(VelocityUtils.REAL_NAME)
+                                    .replacement(user.getRealName()))
+                            .replaceText(builder -> builder
+                                    .match(VelocityUtils.NAME)
+                                    .replacement(player.getUsername())));
+                    return;
+                }
+
+                String sessionIP = SessionCache.getIP(name);
+                String remoteIp = player.getRemoteAddress().getAddress().getHostAddress();
+
+                if (PremiumCache.isPremium(name) || (sessionIP != null && sessionIP.equals(remoteIp))) {
+                    AuthCache.setAuthenticated(name);
+                    if (event == null && future == null) {
+                        connectToBackend(player);
+                    } else {
+                        Optional<RegisteredServer> backendOpt = plugin.getServer().getServer(MainConfig.IMP.servers.backend);
+                        backendOpt.ifPresent(event::setInitialServer);
+                    }
+                    return;
+                }
+
+                // подключаем к auth-серверу
+                if (event == null && future == null) {
+                    connectToAuthServer(player);
+                } else {
+                    Optional<RegisteredServer> authOpt = plugin.getServer().getServer(MainConfig.IMP.servers.auth);
+                    authOpt.ifPresent(event::setInitialServer);
+                }
+
+                Component reminderMessage = (user != null)
+                        ? CachedComponents.IMP.player.reminder.login
+                        : CachedComponents.IMP.player.reminder.register;
+
+                taskManager.startAuthTimeoutTask(player);
+                taskManager.startAuthReminderTask(player, reminderMessage);
+            } finally {
+                if (event != null && future != null) {
+                    future.complete(null);
+                }
             }
-
-            if (user != null && !player.getUsername().equals(user.getRealName())) {
-                player.disconnect(CachedComponents.IMP.player.kick.realname
-                        .replaceText(builder -> builder
-                                .match(VelocityUtils.REAL_NAME)
-                                .replacement(user.getRealName()))
-                        .replaceText(builder -> builder
-                                .match(VelocityUtils.NAME)
-                                .replacement(player.getUsername())));
-                return;
-            }
-
-            String sessionIP = SessionCache.getIP(name);
-            String remoteIp = player.getRemoteAddress().getAddress().getHostAddress();
-
-            if (PremiumCache.isPremium(name) || (sessionIP != null && sessionIP.equals(remoteIp))) {
-                AuthCache.setAuthenticated(name);
-                connectToBackend(player);
-                return;
-            }
-
-            // подключаем к auth-серверу
-            connectToAuthServer(player);
-
-            Component reminderMessage = (user != null)
-                    ? CachedComponents.IMP.player.reminder.login
-                    : CachedComponents.IMP.player.reminder.register;
-
-            taskManager.startAuthTimeoutTask(player);
-            taskManager.startAuthReminderTask(player, reminderMessage);
         });
     }
 
