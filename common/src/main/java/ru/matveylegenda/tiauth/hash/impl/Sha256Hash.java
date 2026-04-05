@@ -30,11 +30,15 @@ public class Sha256Hash implements Hash {
 
     @Override
     public boolean verifyPassword(String password, String hashedPassword) {
-        String[] parts = hashedPassword.split("\\$");
-        if (parts.length != 4) return false;
-        String salt = parts[2];
-        String hash = parts[3];
-        return hash.equals(sha256(sha256(password) + salt));
+        if (hashedPassword.startsWith("$SHA$")) {
+            String[] parts = hashedPassword.split("\\$");
+            if (parts.length != 4) return false;
+            String salt = parts[2];
+            String hash = parts[3];
+            return hash.equals(sha256(sha256(password) + salt));
+        } else {
+            return hashedPassword.equals(sha256(password));
+        }
     }
 
     private String generateSalt(int length) {
