@@ -33,7 +33,7 @@ import java.nio.file.Path;
 @Plugin(
         id = "tiauth",
         name = "tiAuth",
-        version = "1.3.4",
+        version = "1.3.5",
         authors = {"1050TI_top", "OverwriteMC"}
 )
 public final class TiAuth {
