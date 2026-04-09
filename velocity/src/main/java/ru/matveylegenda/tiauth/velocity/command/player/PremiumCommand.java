@@ -24,6 +24,11 @@ public class PremiumCommand implements SimpleCommand {
             return;
         }
 
+        if (!player.hasPermission("tiauth.player.premium")) {
+            VelocityUtils.sendMessage(sender, CachedComponents.IMP.noPermission);
+            return;
+        }
+
         authManager.togglePremium(player);
     }
 }

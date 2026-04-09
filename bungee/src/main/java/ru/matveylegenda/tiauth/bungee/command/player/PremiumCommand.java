@@ -19,11 +19,13 @@ public class PremiumCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!(sender instanceof ProxiedPlayer player)) {
-            BungeeUtils.sendMessage(
-                    sender,
-                    CachedMessages.IMP.onlyPlayer
-            );
+            BungeeUtils.sendMessage(sender, CachedMessages.IMP.onlyPlayer);
 
+            return;
+        }
+
+        if (!player.hasPermission("tiauth.player.premium")) {
+            BungeeUtils.sendMessage(sender, CachedMessages.IMP.noPermission);
             return;
         }
 
