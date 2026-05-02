@@ -7,6 +7,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import ru.matveylegenda.tiauth.bungee.TiAuth;
 import ru.matveylegenda.tiauth.bungee.manager.AuthManager;
+import ru.matveylegenda.tiauth.config.MainConfig;
 
 public class DialogListener implements Listener {
     private final AuthManager authManager;
@@ -27,7 +28,14 @@ public class DialogListener implements Listener {
 
         if (event.getId().equals("minecraft:tiauth_register")) {
             String password = jsonObject.get("password").getAsString().trim();
-            String repeatPassword = jsonObject.get("repeatPassword").getAsString().trim();
+            String repeatPassword;
+
+            if (MainConfig.IMP.auth.repeatPasswordWhenRegister) {
+                repeatPassword = jsonObject.get("repeatPassword").getAsString().trim();
+            } else {
+                repeatPassword = password;
+            }
+
             authManager.registerPlayer(player, password, repeatPassword);
         }
     }

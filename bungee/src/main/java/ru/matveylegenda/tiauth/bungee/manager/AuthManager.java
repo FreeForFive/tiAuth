@@ -12,6 +12,7 @@ import net.md_5.bungee.api.dialog.NoticeDialog;
 import net.md_5.bungee.api.dialog.action.ActionButton;
 import net.md_5.bungee.api.dialog.action.CustomClickAction;
 import net.md_5.bungee.api.dialog.body.PlainMessageBody;
+import net.md_5.bungee.api.dialog.input.DialogInput;
 import net.md_5.bungee.api.dialog.input.TextInput;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import ru.matveylegenda.tiauth.bungee.TiAuth;
@@ -29,6 +30,7 @@ import ru.matveylegenda.tiauth.database.model.AuthUser;
 import ru.matveylegenda.tiauth.hash.Hash;
 import ru.matveylegenda.tiauth.hash.HashFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -613,12 +615,15 @@ public class AuthManager {
                                 )
                         );
             } else {
+                List<DialogInput> inputList = new ArrayList<>();
+
+                inputList.add(new TextInput("password", TextComponent.fromLegacy(CachedMessages.IMP.player.dialog.register.passwordField)));
+                if (MainConfig.IMP.auth.repeatPasswordWhenRegister) {
+                    inputList.add(new TextInput("repeatPassword", TextComponent.fromLegacy(CachedMessages.IMP.player.dialog.register.repeatPasswordField)));
+                }
                 dialog = new NoticeDialog(new DialogBase(TextComponent.fromLegacy(CachedMessages.IMP.player.dialog.register.title))
                         .inputs(
-                                List.of(
-                                        new TextInput("password", TextComponent.fromLegacy(CachedMessages.IMP.player.dialog.register.passwordField)),
-                                        new TextInput("repeatPassword", TextComponent.fromLegacy(CachedMessages.IMP.player.dialog.register.repeatPasswordField))
-                                )
+                                inputList
                         ))
                         .action(
                                 new ActionButton(

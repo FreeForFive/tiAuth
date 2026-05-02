@@ -7,6 +7,7 @@ import ru.matveylegenda.tiauth.bungee.TiAuth;
 import ru.matveylegenda.tiauth.bungee.manager.AuthManager;
 import ru.matveylegenda.tiauth.bungee.storage.CachedMessages;
 import ru.matveylegenda.tiauth.bungee.util.BungeeUtils;
+import ru.matveylegenda.tiauth.config.MainConfig;
 
 public class RegisterCommand extends Command {
     private final AuthManager authManager;
@@ -27,17 +28,16 @@ public class RegisterCommand extends Command {
             return;
         }
 
-        if (args.length != 2) {
-            BungeeUtils.sendMessage(
-                    player,
-                    CachedMessages.IMP.player.register.usage
-            );
+        boolean needRepeat = MainConfig.IMP.auth.repeatPasswordWhenRegister;
+        int requiredArgs = needRepeat ? 2 : 1;
 
+        if (args.length < requiredArgs) {
+            BungeeUtils.sendMessage(player, CachedMessages.IMP.player.register.usage);
             return;
         }
 
         String password = args[0];
-        String repeatPassword = args[1];
+        String repeatPassword = needRepeat ? args[1] : args[0];
 
         authManager.registerPlayer(player, password, repeatPassword);
     }

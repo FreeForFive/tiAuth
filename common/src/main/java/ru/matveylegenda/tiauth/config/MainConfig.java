@@ -203,6 +203,11 @@ public class MainConfig extends YamlSerializable {
                 @CommentValue("Работает только на клиентах 1.21.6+")
         })
         public boolean useDialogs = true;
+
+        @Comment({
+                @CommentValue("Нужно ли повторять игроку пароль в /register")
+        })
+        public boolean repeatPasswordWhenRegister = true;
     }
 
     public BossBar bossBar;
