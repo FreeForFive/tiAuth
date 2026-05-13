@@ -23,10 +23,8 @@ import ru.matveylegenda.tiauth.velocity.listener.AuthListener;
 import ru.matveylegenda.tiauth.velocity.listener.ChatListener;
 import ru.matveylegenda.tiauth.velocity.manager.AuthManager;
 import ru.matveylegenda.tiauth.velocity.manager.TaskManager;
-import ua.nanit.limbo.server.LimboServer;
 
 import java.io.File;
-import java.net.InetSocketAddress;
 import java.nio.file.Path;
 
 @Getter
@@ -69,7 +67,6 @@ public final class TiAuth {
         MessagesConfig.IMP.reload();
         loadLibraries();
         initializeDatabase(dataFolder.toFile());
-        startLimboServer(dataFolder.toFile());
 
         Utils.initializeColorizer(MainConfig.IMP.serializer);
         taskManager = new TaskManager(this);
@@ -178,30 +175,6 @@ public final class TiAuth {
         } catch (Exception e) {
             logger.error("Error during database initialization. Stopping server...", e);
             server.shutdown();
-        }
-    }
-
-    private void startLimboServer(File dataFolder) {
-        if (MainConfig.IMP.servers.useVirtualServer) {
-            try {
-                Path limboPath = dataFolder.toPath().resolve("limbo");
-                if (!limboPath.toFile().exists()) {
-                    limboPath.toFile().mkdir();
-                }
-
-                LimboServer limboServer = new LimboServer();
-                limboServer.start(limboPath);
-
-                server.registerServer(
-                        new com.velocitypowered.api.proxy.server.ServerInfo(
-                                MainConfig.IMP.servers.auth,
-                                (InetSocketAddress) limboServer.getConfig().getAddress()
-                        )
-                );
-            } catch (Exception e) {
-                logger.warn("Error when starting the virtual server. Stopping server...", e);
-                server.shutdown();
-            }
         }
     }
 

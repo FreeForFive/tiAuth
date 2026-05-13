@@ -20,7 +20,6 @@ import ru.matveylegenda.tiauth.config.MainConfig;
 import ru.matveylegenda.tiauth.config.MessagesConfig;
 import ru.matveylegenda.tiauth.database.Database;
 import ru.matveylegenda.tiauth.util.Utils;
-import ua.nanit.limbo.server.LimboServer;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -60,7 +59,6 @@ public final class TiAuth extends Plugin {
             dataFolder.mkdir();
         }
         initializeDatabase(dataFolder);
-        startLimboServer(dataFolder);
         Utils.initializeColorizer(MainConfig.IMP.serializer);
         taskManager = new TaskManager(this);
         authManager = new AuthManager(this);
@@ -240,28 +238,6 @@ public final class TiAuth extends Plugin {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error during database initialization. Stopping server...", e);
             getProxy().stop();
-        }
-    }
-
-    private void startLimboServer(File dataFolder) {
-        if (MainConfig.IMP.servers.useVirtualServer) {
-            try {
-                Path limboPath = dataFolder.toPath().resolve("limbo");
-                if (!limboPath.toFile().exists()) {
-                    limboPath.toFile().mkdir();
-                }
-                LimboServer limboServer = new LimboServer();
-                limboServer.start(limboPath);
-
-                ServerInfo authServer = getProxy().constructServerInfo(MainConfig.IMP.servers.auth, limboServer.getConfig().getAddress(), "auth server", false);
-                getProxy().getServers().put(
-                        MainConfig.IMP.servers.auth,
-                        authServer
-                );
-            } catch (Exception e) {
-                logger.log(Level.WARNING, "Error when starting the virtual server. Stopping server...", e);
-                getProxy().stop();
-            }
         }
     }
 
