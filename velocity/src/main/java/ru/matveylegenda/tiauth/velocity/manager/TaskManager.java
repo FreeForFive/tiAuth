@@ -101,9 +101,9 @@ public class TaskManager {
                 CachedComponents.IMP.player.title.subTitle.replaceText(builder -> builder
                         .match(VelocityUtils.TIME)
                         .replacement(String.valueOf(counter))),
-                0,
-                21,
-                0);
+                MainConfig.IMP.title.fadeIn,
+                MainConfig.IMP.title.stay,
+                MainConfig.IMP.title.fadeOut);
         player.showTitle(componentTitle);
     }
 

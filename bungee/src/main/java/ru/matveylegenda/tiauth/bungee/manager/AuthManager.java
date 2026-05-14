@@ -171,9 +171,9 @@ public class AuthManager {
                             title.subTitle(TextComponent.fromLegacy(
                                     CachedMessages.IMP.player.title.onAuthSubTitle
                             ));
-                            title.fadeIn(10);
-                            title.stay(40);
-                            title.fadeOut(10);
+                            title.fadeIn(MainConfig.IMP.title.onAuthFadeIn);
+                            title.stay(MainConfig.IMP.title.onAuthStay);
+                            title.fadeOut(MainConfig.IMP.title.onAuthFadeOut);
 
                             player.sendTitle(title);
                         }
@@ -378,9 +378,9 @@ public class AuthManager {
                             title.subTitle(TextComponent.fromLegacy(
                                     CachedMessages.IMP.player.title.onAuthSubTitle
                             ));
-                            title.fadeIn(10);
-                            title.stay(40);
-                            title.fadeOut(10);
+                            title.fadeIn(MainConfig.IMP.title.onAuthFadeIn);
+                            title.stay(MainConfig.IMP.title.onAuthStay);
+                            title.fadeOut(MainConfig.IMP.title.onAuthFadeOut);
 
                             player.sendTitle(title);
                         }

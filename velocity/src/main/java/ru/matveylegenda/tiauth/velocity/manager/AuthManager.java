@@ -145,9 +145,9 @@ public class AuthManager {
                         Title componentTitle = Title.title(
                                 CachedComponents.IMP.player.title.onAuthTitle,
                                 CachedComponents.IMP.player.title.onAuthSubTitle,
-                                10,
-                                40,
-                                10);
+                                MainConfig.IMP.title.onAuthFadeIn,
+                                MainConfig.IMP.title.onAuthStay,
+                                MainConfig.IMP.title.onAuthFadeOut);
                         player.showTitle(componentTitle);
                     }).delay(Duration.ofMillis(MainConfig.IMP.title.titleDelayMs)).schedule();
                 }
@@ -328,9 +328,9 @@ public class AuthManager {
                         Title componentTitle = Title.title(
                                 CachedComponents.IMP.player.title.onAuthTitle,
                                 CachedComponents.IMP.player.title.onAuthSubTitle,
-                                10,
-                                40,
-                                10);
+                                MainConfig.IMP.title.onAuthFadeIn,
+                                MainConfig.IMP.title.onAuthStay,
+                                MainConfig.IMP.title.onAuthFadeOut);
                         player.showTitle(componentTitle);
                     }).delay(Duration.ofMillis(MainConfig.IMP.title.titleDelayMs)).schedule();
                 }
