@@ -26,8 +26,8 @@ public class MessagesConfig extends YamlSerializable {
 
     private static Path getMessageConfigPath() {
         return switch (MainConfig.IMP.lang) {
-            case RU -> Path.of("plugins/tiAuth", "lang", "messages_ru.yml");
             case EN -> Path.of("plugins/tiAuth", "lang", "messages_en.yml");
+            case RU -> Path.of("plugins/tiAuth", "lang", "messages_ru.yml");
         };
     }
 
@@ -225,6 +225,81 @@ public class MessagesConfig extends YamlSerializable {
 
     public void loadLang(Lang lang) {
         switch (lang) {
+            case EN -> {
+                prefix = "&#8833ECᴀ&#7F65E7ᴜ&#7796E3ᴛ&#6EC8DEʜ &8»";
+                onlyPlayer = "{prefix} &fThis command can only be used by a player";
+                queryError = "{prefix} &fAn error occurred while querying the database. Please contact the administration!";
+                processing = "{prefix} &fPlease wait until the previous request is processed";
+                playerNotFound = "{prefix} &fPlayer not found";
+                noPermission = "{prefix} &fInsufficient permissions";
+
+                admin.usage = "{prefix} &fUsage: &#8833EC/tiauth <reload|unregister|changepassword|forcelogin|forcepremium>";
+                admin.config.reload = "{prefix} &fConfigs reloaded";
+                admin.unregister.usage = "{prefix} &fUsage: &#8833EC/tiauth unregister";
+                admin.unregister.success = "{prefix} &fYou have successfully deleted the account of player &#8833EC{player}";
+                admin.changePassword.usage = "{prefix} &fUsage: &#8833EC/tiauth changepassword <player> <password>";
+                admin.changePassword.success = "{prefix} &fYou have successfully changed the password for player &#8833EC{player}";
+                admin.forceLogin.usage = "{prefix} &fUsage: &#8833EC/tiauth forcelogin <nickname>";
+                admin.forceLogin.isAuthenticated = "{prefix} &fPlayer &#8833EC{player} &fis already authenticated";
+                admin.forceLogin.success = "{prefix} &fYou have successfully authenticated player &#8833EC{player}";
+                admin.forceRegister.usage = "{prefix} &fUsage: &#8833EC/tiauth forceregister <username> <password>";
+                admin.forceRegister.alreadyRegistered = "{prefix} &fPlayer &#8833EC{player} &fis already registered";
+                admin.forceRegister.success = "{prefix} &fYou have successfully registered the account &#8833EC{player}";
+                admin.forcePremium.usage = "{prefix} &fUsage: &#8833EC/tiauth forcepremium <player>";
+                admin.forcePremium.enabled = "{prefix} &fYou have successfully enabled premium mode for player &#8833EC{player}";
+                admin.forcePremium.disabled = "{prefix} &fYou have successfully disabled premium mode for player &#8833EC{player}";
+                admin.migrate.usage = "{prefix} &fUsage: &#8833EC/tiauth migrate <sourceplugin> <sourcedatabase> [file] [user] [password] [host] [port] [name]";
+                admin.migrate.error = "{prefix} &fAn error occurred during database migration";
+                admin.migrate.success = "{prefix} &fDatabase has been successfully migrated";
+
+                player.checkPassword.wrongPassword = "{prefix} &fWrong password";
+                player.checkPassword.invalidLength = "{prefix} &fPassword length must be between &#8833EC{min} &fand &#8833EC{max} &fcharacters";
+                player.checkPassword.invalidPattern = "{prefix} &fPassword contains invalid characters";
+                player.checkPassword.passwordEmpty = "{prefix} &fPassword cannot be empty";
+                player.register.usage = "{prefix} &fUsage: &#8833EC/register <password> <password>";
+                player.register.mismatch = "{prefix} &fPasswords do not match";
+                player.register.alreadyRegistered = "{prefix} &fYou are already registered";
+                player.register.success = "{prefix} &fYou have successfully registered";
+                player.unregister.usage = "{prefix} &fUsage: &#8833EC/unregister <password>";
+                player.unregister.success = "{prefix} &fYou have successfully deleted your account";
+                player.login.usage = "{prefix} &fUsage: &#8833EC/login <password>";
+                player.login.notRegistered = "{prefix} &fYou are not registered yet";
+                player.login.alreadyLogged = "{prefix} &fYou are already logged in";
+                player.login.wrongPassword = "{prefix} &fWrong password. &#8833EC{attempts} attempts left";
+                player.login.success = "{prefix} &fYou have successfully logged in";
+                player.changePassword.usage = "{prefix} &fUsage: &#8833EC/changepassword <old password> <new password>";
+                player.changePassword.success = "{prefix} &fYou have successfully changed your password";
+                player.logout.logoutByPremium = "{prefix} &fYou cannot log out due to &#8833ECpremium mode";
+                player.premium.enabled = "{prefix} &fPremium mode &#8833ECenabled\n&fIf you don't have a Minecraft license, disable it using /premium, otherwise you won't be able to join the server";
+                player.premium.disabled = "{prefix} &fPremium mode &#8833ECdisabled";
+                player.kick.timeout = "{prefix} &fYou did not authenticate in time";
+                player.kick.realname = "{prefix} &fCorrect nickname: &#8833EC{realname}\n&fYour nickname: &#8833EC{name}";
+                player.kick.tooManyAttempts = "{prefix} &fYou exceeded the number of password attempts";
+                player.kick.ban = "{prefix} &fYour account has been locked for &#8833EC{time} &fseconds due to exceeding password attempts";
+                player.kick.invalidNickPattern = "{prefix} &fYour nickname contains invalid characters";
+                player.kick.ipLimitOnlineReached = "{prefix} &fToo many accounts are currently playing from this IP address";
+                player.kick.ipLimitRegisteredReached = "{prefix} &fToo many accounts registered from this IP address";
+                player.reminder.login = "{prefix} &fAuthenticate using &#8833EC/login <password>";
+                player.reminder.register = "{prefix} &fRegister using &#8833EC/register <password> <password>";
+                player.dialog.register.title = "Registration";
+                player.dialog.register.passwordField = "Password";
+                player.dialog.register.repeatPasswordField = "Repeat Password";
+                player.dialog.register.confirmButton = "Register";
+                player.dialog.login.title = "Login";
+                player.dialog.login.passwordField = "Password";
+                player.dialog.login.confirmButton = "Login";
+                player.dialog.notifications.wrongPassword = "&cWrong password\n{attempts} attempts left";
+                player.dialog.notifications.invalidLength = "&cPassword length must be between {min} and {max} characters";
+                player.dialog.notifications.invalidPattern = "&cPassword contains invalid characters";
+                player.dialog.notifications.mismatch = "&cPasswords do not match";
+                player.dialog.notifications.passwordEmpty = "&cPassword cannot be empty";
+                player.bossBar.message = "{prefix} &fTime remaining: &#8833EC{time} &fseconds";
+                player.title.title = "{prefix}";
+                player.title.subTitle = "&fTime remaining: &#8833EC{time} &fseconds";
+                player.title.onAuthTitle = "{prefix}";
+                player.title.onAuthSubTitle = "&fYou have &#8833ECsuccessfully &flogged in";
+                player.actionBar.message = "{prefix} &fTime remaining: &#8833EC{time} &fseconds";
+            }
             case RU -> {
                 prefix = "&#8833ECᴀ&#7F65E7ᴜ&#7796E3ᴛ&#6EC8DEʜ &8»";
                 onlyPlayer = "{prefix} &fКоманду может использовать только игрок";
@@ -300,86 +375,11 @@ public class MessagesConfig extends YamlSerializable {
                 player.title.onAuthSubTitle = "&fВы &#8833ECуспешно &fавторизовались";
                 player.actionBar.message = "{prefix} &fОсталось &#8833EC{time} &fсекунд";
             }
-            case EN -> {
-                prefix = "&#8833ECᴀ&#7F65E7ᴜ&#7796E3ᴛ&#6EC8DEʜ &8»";
-                onlyPlayer = "{prefix} &fThis command can only be used by a player";
-                queryError = "{prefix} &fAn error occurred while querying the database. Please contact the administration!";
-                processing = "{prefix} &fPlease wait until the previous request is processed";
-                playerNotFound = "{prefix} &fPlayer not found";
-                noPermission = "{prefix} &fInsufficient permissions";
-
-                admin.usage = "{prefix} &fUsage: &#8833EC/tiauth <reload|unregister|changepassword|forcelogin|forcepremium>";
-                admin.config.reload = "{prefix} &fConfigs reloaded";
-                admin.unregister.usage = "{prefix} &fUsage: &#8833EC/tiauth unregister";
-                admin.unregister.success = "{prefix} &fYou have successfully deleted the account of player &#8833EC{player}";
-                admin.changePassword.usage = "{prefix} &fUsage: &#8833EC/tiauth changepassword <player> <password>";
-                admin.changePassword.success = "{prefix} &fYou have successfully changed the password for player &#8833EC{player}";
-                admin.forceLogin.usage = "{prefix} &fUsage: &#8833EC/tiauth forcelogin <nickname>";
-                admin.forceLogin.isAuthenticated = "{prefix} &fPlayer &#8833EC{player} &fis already authenticated";
-                admin.forceLogin.success = "{prefix} &fYou have successfully authenticated player &#8833EC{player}";
-                admin.forceRegister.usage = "{prefix} &fUsage: &#8833EC/tiauth forceregister <username> <password>";
-                admin.forceRegister.alreadyRegistered = "{prefix} &fPlayer &#8833EC{player} &fis already registered";
-                admin.forceRegister.success = "{prefix} &fYou have successfully registered the account &#8833EC{player}";
-                admin.forcePremium.usage = "{prefix} &fUsage: &#8833EC/tiauth forcepremium <player>";
-                admin.forcePremium.enabled = "{prefix} &fYou have successfully enabled premium mode for player &#8833EC{player}";
-                admin.forcePremium.disabled = "{prefix} &fYou have successfully disabled premium mode for player &#8833EC{player}";
-                admin.migrate.usage = "{prefix} &Usage: &#8833EC/tiauth migrate <sourceplugin> <sourcedatabase> [file] [user] [password] [host] [port] [name]";
-                admin.migrate.error = "{prefix} &fAn error occurred during database migration";
-                admin.migrate.success = "{prefix} &fDatabase has been successfully migrated";
-
-                player.checkPassword.wrongPassword = "{prefix} &fWrong password";
-                player.checkPassword.invalidLength = "{prefix} &fPassword length must be between &#8833EC{min} &fand &#8833EC{max} &fcharacters";
-                player.checkPassword.invalidPattern = "{prefix} &fPassword contains invalid characters";
-                player.checkPassword.passwordEmpty = "{prefix} &fPassword cannot be empty";
-                player.register.usage = "{prefix} &fUsage: &#8833EC/register <password> <password>";
-                player.register.mismatch = "{prefix} &fPasswords do not match";
-                player.register.alreadyRegistered = "{prefix} &fYou are already registered";
-                player.register.success = "{prefix} &fYou have successfully registered";
-                player.unregister.usage = "{prefix} &fUsage: &#8833EC/unregister <password>";
-                player.unregister.success = "{prefix} &fYou have successfully deleted your account";
-                player.login.usage = "{prefix} &fUsage: &#8833EC/login <password>";
-                player.login.notRegistered = "{prefix} &fYou are not registered yet";
-                player.login.alreadyLogged = "{prefix} &fYou are already logged in";
-                player.login.wrongPassword = "{prefix} &fWrong password. &#8833EC{attempts} attempts left";
-                player.login.success = "{prefix} &fYou have successfully logged in";
-                player.changePassword.usage = "{prefix} &fUsage: &#8833EC/changepassword <old password> <new password>";
-                player.changePassword.success = "{prefix} &fYou have successfully changed your password";
-                player.logout.logoutByPremium = "{prefix} &fYou cannot log out due to &#8833ECpremium mode";
-                player.premium.enabled = "{prefix} &fPremium mode &#8833ECenabled\n&fIf you don't have a Minecraft license, disable it using /premium, otherwise you won't be able to join the server";
-                player.premium.disabled = "{prefix} &fPremium mode &#8833ECdisabled";
-                player.kick.timeout = "{prefix} &fYou did not authenticate in time";
-                player.kick.realname = "{prefix} &fCorrect nickname: &#8833EC{realname}\n&fYour nickname: &#8833EC{name}";
-                player.kick.tooManyAttempts = "{prefix} &fYou exceeded the number of password attempts";
-                player.kick.ban = "{prefix} &fYour account has been locked for &#8833EC{time} &fseconds due to exceeding password attempts";
-                player.kick.invalidNickPattern = "{prefix} &fYour nickname contains invalid characters";
-                player.kick.ipLimitOnlineReached = "{prefix} &fToo many accounts are currently playing from this IP address";
-                player.kick.ipLimitRegisteredReached = "{prefix} &fToo many accounts registered from this IP address";
-                player.reminder.login = "{prefix} &fAuthenticate using &#8833EC/login <password>";
-                player.reminder.register = "{prefix} &fRegister using &#8833EC/register <password> <password>";
-                player.dialog.register.title = "Registration";
-                player.dialog.register.passwordField = "Password";
-                player.dialog.register.repeatPasswordField = "Repeat Password";
-                player.dialog.register.confirmButton = "Register";
-                player.dialog.login.title = "Login";
-                player.dialog.login.passwordField = "Password";
-                player.dialog.login.confirmButton = "Login";
-                player.dialog.notifications.wrongPassword = "&cWrong password\n{attempts} attempts left";
-                player.dialog.notifications.invalidLength = "&cPassword length must be between {min} and {max} characters";
-                player.dialog.notifications.invalidPattern = "&cPassword contains invalid characters";
-                player.dialog.notifications.mismatch = "&cPasswords do not match";
-                player.dialog.notifications.passwordEmpty = "&cPassword cannot be empty";
-                player.bossBar.message = "{prefix} &fTime remaining: &#8833EC{time} &fseconds";
-                player.title.title = "{prefix}";
-                player.title.subTitle = "&fTime remaining: &#8833EC{time} &fseconds";
-                player.title.onAuthTitle = "{prefix}";
-                player.title.onAuthSubTitle = "&fYou have &#8833ECsuccessfully &flogged in";
-                player.actionBar.message = "{prefix} &fTime remaining: &#8833EC{time} &fseconds";
-            }
         }
     }
 
     public enum Lang {
-        RU,
-        EN
+        EN,
+        RU
     }
 }

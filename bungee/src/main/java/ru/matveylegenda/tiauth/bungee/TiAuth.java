@@ -47,10 +47,10 @@ public final class TiAuth extends Plugin {
     @Override
     public void onEnable() {
 //        if (!isSupportedVersion()) {
-//            logger.warning("*** ВНИМАНИЕ ***");
-//            logger.warning("tiAuth поддерживает BungeeCord версии 1.21 и выше!");
-//            logger.warning("Вы пытаетесь запустить плагин на версии " + ProxyServer.getInstance().getVersion());
-//            logger.warning("Обновите прокси, если хотите использовать tiAuth.");
+//            logger.warning("*** WARNING ***");
+//            logger.warning("tiAuth supports BungeeCord version 1.21 and higher!");
+//            logger.warning("You are trying to run the plugin on version " + ProxyServer.getInstance().getVersion());
+//            logger.warning("Update your proxy if you want to use tiAuth.");
 //            return;
 //        }
         logger = getLogger();

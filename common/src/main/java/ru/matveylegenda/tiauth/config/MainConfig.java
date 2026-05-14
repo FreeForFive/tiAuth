@@ -36,28 +36,28 @@ public class MainConfig extends YamlSerializable {
     }
 
     @Comment({
-            @CommentValue("Доступные варианты:"),
-            @CommentValue("LEGACY - \"&fПример &#650dbdтекста\""),
-            @CommentValue("MINIMESSAGE - \"<white>Пример</white> <color:#650dbd>текста</color>\" (https://webui.advntr.dev/)")
+            @CommentValue("Available options:"),
+            @CommentValue("LEGACY - \"&fText &#650dbdexample\""),
+            @CommentValue("MINIMESSAGE - \"<white>Text</white> <color:#650dbd>example</color>\" (https://webui.advntr.dev/)")
     })
     public Serializer serializer = Serializer.LEGACY;
 
     @Comment({
-            @CommentValue("Доступные языки: RU, EN")
+            @CommentValue("Available languages: EN, RU")
     })
-    public MessagesConfig.Lang lang = MessagesConfig.Lang.RU;
+    public MessagesConfig.Lang lang = MessagesConfig.Lang.EN;
 
     public Servers servers;
 
     @NewLine
     public static class Servers {
         @Comment({
-                @CommentValue("Сервер авторизации на который будет перемещать игроков для регистрации/авторизации")
+                @CommentValue("The auth server to which players will be moved for registration/authentication")
         })
         public String auth = "auth";
 
         @Comment({
-                @CommentValue("Бэкенд сервер на который будет перемещать игроков после регистрации/авторизации")
+                @CommentValue("The backend server to which players will be moved after registration/authentication")
         })
         public String backend = "hub";
     }
@@ -67,8 +67,8 @@ public class MainConfig extends YamlSerializable {
     @NewLine
     public static class Database {
         @Comment({
-                @CommentValue("Тип базы данных"),
-                @CommentValue("Доступные варианты: SQLITE, H2, MYSQL, POSTGRESQL")
+                @CommentValue("Database type"),
+                @CommentValue("Available options: SQLITE, H2, MYSQL, POSTGRESQL")
         })
         public DatabaseType type = DatabaseType.H2;
         public String host;
@@ -79,35 +79,35 @@ public class MainConfig extends YamlSerializable {
 
         @NewLine
         @Comment({
-                @CommentValue("Параметры пула соединений (H2, MySQL, PostgreSQL")
+                @CommentValue("Connection pool settings (H2, MySQL, PostgreSQL)")
         })
         @Comment(
-                value = @CommentValue("Максимальное время ожидания соединения из пула"),
+                value = @CommentValue("Maximum wait time for a connection from the pool"),
                 at = Comment.At.SAME_LINE
         )
         public long connectionTimeoutMs = 30000;
         @Comment(
-                value = @CommentValue("Максимальное время простоя соединения в пуле. Применяется только если min-idle меньше max-pool-size"),
+                value = @CommentValue("Maximum connection idle time in the pool. Applies only if min-idle is less than max-pool-size"),
                 at = Comment.At.SAME_LINE
         )
         public long idleTimeoutMs = 600000;
         @Comment(
-                value = @CommentValue("Максимальное время жизни соединения в пуле. После этого соединение будет закрыто и открыто новое, если требуется"),
+                value = @CommentValue("Maximum connection lifetime in the pool. After this, the connection will be closed and a new one opened if needed"),
                 at = Comment.At.SAME_LINE
         )
         public long maxLifetimeMs = 1800000;
         @Comment(
                 value = {
-                        @CommentValue("Максимальное количество соединений в пуле"),
-                        @CommentValue("Для H2 рекомендуется использовать небольшое количество соединений, например 2"),
-                        @CommentValue("Для MySQL и PostgreSQL можно выставить больше, например 10")
+                        @CommentValue("Maximum number of connections in the pool"),
+                        @CommentValue("For H2, it is recommended to use a small number of connections, e.g., 2"),
+                        @CommentValue("For MySQL and PostgreSQL, you can set more, e.g., 10")
                 },
                 at = Comment.At.SAME_LINE
         )
         public int maxPoolSize = 2;
         @Comment(
                 value = {
-                        @CommentValue("Минимальное количество простаивающих соединений в пуле. -1 = max-pool-size")
+                        @CommentValue("Minimum number of idle connections in the pool. -1 = max-pool-size")
                 },
                 at = Comment.At.SAME_LINE
         )
@@ -119,67 +119,67 @@ public class MainConfig extends YamlSerializable {
     @NewLine
     public static class Auth {
         @Comment({
-                @CommentValue("Количество попыток ввода пароля")
+                @CommentValue("Number of password entry attempts")
         })
         public int loginAttempts = 3;
 
         @Comment({
-                @CommentValue("Банить ли игрока при исчерпании попыток авторизации")
+                @CommentValue("Whether to ban the player after exhausting authentication attempts")
         })
         public boolean banPlayer = true;
 
         @Comment({
-                @CommentValue("На сколько секунд банить игрока при исчерпании попыток авторизации")
+                @CommentValue("How many seconds to ban the player after exhausting authentication attempts")
         })
         public int banTime = 60;
 
         @Comment({
-                @CommentValue("Раз в сколько секунд игроку отправляется сообщение о требованием в регистрации/авторизации")
+                @CommentValue("How often (in seconds) a reminder message to register/authenticate is sent to the player")
         })
         public int reminderInterval = 3;
 
         @Comment({
-                @CommentValue("Сколько секунд дается игроку на регистрацию/авторизацию")
+                @CommentValue("How many seconds the player is given to register/authenticate")
         })
         public int timeoutSeconds = 60;
 
         @Comment({
-                @CommentValue("Сколько игрок может заходить без авторизации, если его IP не изменился")
+                @CommentValue("How long (in minutes) a player can join without re-authentication if their IP has not changed")
         })
         public int sessionLifetimeMinutes = 60;
 
         @Comment({
-                @CommentValue("Минимальная длина пароля")
+                @CommentValue("Minimum password length")
         })
         public int minPasswordLength = 6;
 
         @Comment({
-                @CommentValue("Максимальная длина пароля")
+                @CommentValue("Maximum password length")
         })
         public int maxPasswordLength = 32;
 
         @Comment({
-                @CommentValue("Регулярное выражение для пароля")
+                @CommentValue("Regular expression for the password")
         })
         public String passwordPattern = "^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]*$";
 
         @Comment({
-                @CommentValue("Алгоритм хеширования пароля"),
-                @CommentValue("Доступные варианты:"),
+                @CommentValue("Password hashing algorithm"),
+                @CommentValue("Available options:"),
                 @CommentValue("BCRYPT"),
                 @CommentValue("SHA256")
         })
         public HashType hashAlgorithm = HashType.BCRYPT;
 
         @Comment({
-                @CommentValue("Сложность алгоритма bcrypt."),
-                @CommentValue("Чем больше значение - тем сложнее сбрутить пароль."),
-                @CommentValue("(БОльшие значения выдают бОльшую нагрузку!)")
+                @CommentValue("BCrypt algorithm complexity (cost)."),
+                @CommentValue("The higher the value, the harder it is to brute-force the password."),
+                @CommentValue("(Higher values result in more CPU load!)")
         })
         public int bcryptCost = 12;
 
         @Comment({
-                @CommentValue("Команды, которые можно использовать во время авторизации")
+                @CommentValue("Commands that can be used during authentication")
         })
         public List<String> allowedCommands = List.of(
                 "/login",
@@ -190,13 +190,13 @@ public class MainConfig extends YamlSerializable {
         );
 
         @Comment({
-                @CommentValue("Использовать ли диалоговое окно для регистрации/авторизации"),
-                @CommentValue("Работает только на клиентах 1.21.6+")
+                @CommentValue("Whether to use a dialog window for registration/authentication"),
+                @CommentValue("Works only on clients 1.21.6+")
         })
         public boolean useDialogs = true;
 
         @Comment({
-                @CommentValue("Нужно ли повторять игроку пароль в /register")
+                @CommentValue("Whether the player needs to repeat the password in /register")
         })
         public boolean repeatPasswordWhenRegister = true;
     }
@@ -226,7 +226,7 @@ public class MainConfig extends YamlSerializable {
         public boolean enabledOnAuth = false;
 
         @Comment({
-                @CommentValue("Настройки появления (в тиках, 20 тиков = 1 секунда)")
+                @CommentValue("Fade settings (in ticks, 20 ticks = 1 second)")
         })
         public int fadeIn = 0;
         public int stay = 21;
@@ -234,7 +234,7 @@ public class MainConfig extends YamlSerializable {
 
         @NewLine
         @Comment({
-                @CommentValue("Настройки появления после авторизации (в тиках, 20 тиков = 1 секунда)")
+                @CommentValue("Fade settings after authentication (in ticks, 20 ticks = 1 second)")
         })
         public int onAuthFadeIn = 10;
         public int onAuthStay = 40;
@@ -242,8 +242,8 @@ public class MainConfig extends YamlSerializable {
 
         @NewLine
         @Comment({
-                @CommentValue("Задержка перед отправкой Title после авторизации (в миллисекундах)"),
-                @CommentValue("Помогает если игрок не видит Title из-за телепортации на другой сервер")
+                @CommentValue("Delay before sending Title after authentication (in milliseconds)"),
+                @CommentValue("Helps if the player doesn't see the Title due to teleportation to another server")
         })
         public long titleDelayMs = 1500;
     }
@@ -257,15 +257,15 @@ public class MainConfig extends YamlSerializable {
 
     @NewLine
     @Comment({
-            @CommentValue("Регулярное выражение для ника")
+            @CommentValue("Regular expression for the nickname")
     })
     public String nickPattern = "^[a-zA-Z0-9_]{3,16}$";
     @Comment({
-            @CommentValue("Максимальное количество одновременно играющих аккаунтов с одного IP")
+            @CommentValue("Maximum number of accounts playing simultaneously from one IP")
     })
     public int maxOnlineAccountsPerIp = 10;
     @Comment({
-            @CommentValue("Максимальное количество зарегистрированных аккаунтов с одного IP")
+            @CommentValue("Maximum number of registered accounts from one IP")
     })
     public int maxRegisteredAccountsPerIp = 10;
 

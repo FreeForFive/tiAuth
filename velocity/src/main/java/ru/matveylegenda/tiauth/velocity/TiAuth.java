@@ -57,10 +57,10 @@ public final class TiAuth {
     @Subscribe
     public void onProxyInitialize(ProxyInitializeEvent event) {
         if (!isSupportedVersion()) {
-            logger.warn("*** ВНИМАНИЕ ***");
-            logger.warn("tiAuth поддерживает Velocity версии 3.4.0 и выше!");
-            logger.warn("Вы пытаетесь запустить плагин на версии {}", server.getVersion().getVersion());
-            logger.warn("Обновите прокси, если хотите использовать tiAuth.");
+            logger.warn("*** WARNING ***");
+            logger.warn("tiAuth supports Velocity version 3.4.0 and higher!");
+            logger.warn("You are trying to run the plugin on version {}", server.getVersion().getVersion());
+            logger.warn("Update your proxy if you want to use tiAuth.");
             return;
         }
         MainConfig.IMP.reload();
