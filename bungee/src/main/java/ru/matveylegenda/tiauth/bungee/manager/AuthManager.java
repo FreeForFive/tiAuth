@@ -161,6 +161,25 @@ public class AuthManager {
                 );
                 AuthCache.setAuthenticated(player.getName());
 
+                if (MainConfig.IMP.title.enabledOnAuth) {
+                    plugin.getProxy().getScheduler().schedule(plugin, () -> {
+                        if (player.isConnected()) {
+                            Title title = ProxyServer.getInstance().createTitle();
+                            title.title(TextComponent.fromLegacy(
+                                    CachedMessages.IMP.player.title.onAuthTitle
+                            ));
+                            title.subTitle(TextComponent.fromLegacy(
+                                    CachedMessages.IMP.player.title.onAuthSubTitle
+                            ));
+                            title.fadeIn(10);
+                            title.stay(40);
+                            title.fadeOut(10);
+
+                            player.sendTitle(title);
+                        }
+                    }, MainConfig.IMP.title.titleDelayMs, TimeUnit.MILLISECONDS);
+                }
+
                 SessionCache.addPlayer(player.getName(), player.getAddress().getAddress().getHostAddress());
                 taskManager.cancelTasks(player);
 
@@ -350,18 +369,22 @@ public class AuthManager {
                 );
 
                 if (MainConfig.IMP.title.enabledOnAuth) {
-                    Title title = ProxyServer.getInstance().createTitle();
-                    title.title(TextComponent.fromLegacy(
-                            CachedMessages.IMP.player.title.onAuthTitle
-                    ));
-                    title.subTitle(TextComponent.fromLegacy(
-                            CachedMessages.IMP.player.title.onAuthSubTitle
-                    ));
-                    title.fadeIn(0);
-                    title.stay(21);
-                    title.fadeOut(0);
+                    plugin.getProxy().getScheduler().schedule(plugin, () -> {
+                        if (player.isConnected()) {
+                            Title title = ProxyServer.getInstance().createTitle();
+                            title.title(TextComponent.fromLegacy(
+                                    CachedMessages.IMP.player.title.onAuthTitle
+                            ));
+                            title.subTitle(TextComponent.fromLegacy(
+                                    CachedMessages.IMP.player.title.onAuthSubTitle
+                            ));
+                            title.fadeIn(10);
+                            title.stay(40);
+                            title.fadeOut(10);
 
-                    player.sendTitle(title);
+                            player.sendTitle(title);
+                        }
+                    }, MainConfig.IMP.title.titleDelayMs, TimeUnit.MILLISECONDS);
                 }
 
                 loginAttempts.remove(player.getName());

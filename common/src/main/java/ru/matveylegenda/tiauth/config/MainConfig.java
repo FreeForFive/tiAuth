@@ -224,6 +224,11 @@ public class MainConfig extends YamlSerializable {
     public static class Title {
         public boolean enabled = false;
         public boolean enabledOnAuth = false;
+        @Comment({
+                @CommentValue("Задержка перед отправкой Title после авторизации (в миллисекундах)"),
+                @CommentValue("Помогает если игрок не видит Title из-за телепортации на другой сервер")
+        })
+        public long titleDelayMs = 1500;
     }
 
     public ActionBar actionBar;

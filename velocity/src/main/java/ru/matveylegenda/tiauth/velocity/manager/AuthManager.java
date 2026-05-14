@@ -21,6 +21,7 @@ import ru.matveylegenda.tiauth.velocity.api.event.PlayerRegisterEvent;
 import ru.matveylegenda.tiauth.velocity.storage.CachedComponents;
 import ru.matveylegenda.tiauth.velocity.util.VelocityUtils;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -138,6 +139,18 @@ public class AuthManager {
 
                 player.sendMessage(CachedComponents.IMP.player.register.success);
                 AuthCache.setAuthenticated(name);
+
+                if (MainConfig.IMP.title.enabledOnAuth) {
+                    plugin.getServer().getScheduler().buildTask(plugin, () -> {
+                        Title componentTitle = Title.title(
+                                CachedComponents.IMP.player.title.onAuthTitle,
+                                CachedComponents.IMP.player.title.onAuthSubTitle,
+                                10,
+                                40,
+                                10);
+                        player.showTitle(componentTitle);
+                    }).delay(Duration.ofMillis(MainConfig.IMP.title.titleDelayMs)).schedule();
+                }
 
                 SessionCache.addPlayer(name, ip);
                 taskManager.cancelTasks(player);
@@ -311,13 +324,15 @@ public class AuthManager {
                 player.sendMessage(CachedComponents.IMP.player.login.success);
 
                 if (MainConfig.IMP.title.enabledOnAuth) {
-                    Title componentTitle = Title.title(
-                            CachedComponents.IMP.player.title.onAuthTitle,
-                            CachedComponents.IMP.player.title.onAuthSubTitle,
-                            0,
-                            21,
-                            0);
-                    player.showTitle(componentTitle);
+                    plugin.getServer().getScheduler().buildTask(plugin, () -> {
+                        Title componentTitle = Title.title(
+                                CachedComponents.IMP.player.title.onAuthTitle,
+                                CachedComponents.IMP.player.title.onAuthSubTitle,
+                                10,
+                                40,
+                                10);
+                        player.showTitle(componentTitle);
+                    }).delay(Duration.ofMillis(MainConfig.IMP.title.titleDelayMs)).schedule();
                 }
 
                 loginAttempts.remove(name);
