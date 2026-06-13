@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AuthUserRepository {
 
@@ -24,6 +25,23 @@ public class AuthUserRepository {
         authUserDao = DaoManager.createDao(connectionSource, AuthUser.class);
         TableUtils.createTableIfNotExists(connectionSource, AuthUser.class);
         this.executor = executor;
+        migrateTotpColumn();
+    }
+
+    private void migrateTotpColumn() {
+        try {
+            authUserDao.executeRawNoArgs("ALTER TABLE auth_users ADD COLUMN totpToken VARCHAR(255) DEFAULT ''");
+            Database.LOGGER.log(Level.INFO, "Added totpToken column to auth_users table");
+        } catch (SQLException e) {
+            if (e.getMessage() != null && e.getMessage().contains("duplicate column")) {
+                return;
+            }
+            try {
+                authUserDao.executeRawNoArgs("ALTER TABLE auth_users ADD COLUMN totpToken TEXT DEFAULT ''");
+            } catch (SQLException ignored) {
+                // Column already exists
+            }
+        }
     }
 
     public void registerUser(AuthUser user, Consumer<Boolean> callback) {
@@ -159,6 +177,27 @@ public class AuthUserRepository {
                     authUserDao.update(user);
                 }
             } catch (SQLException e) {
+                Database.LOGGER.log(Level.WARNING, "Error during database query", e);
+            }
+        });
+    }
+
+    public void updateTotpToken(String username, String totpToken, Consumer<Boolean> callback) {
+        executor.submit(() -> {
+            try {
+                AuthUser user = authUserDao.queryForId(username.toLowerCase(Locale.ROOT));
+                if (user != null) {
+                    user.setTotpToken(totpToken);
+                    authUserDao.update(user);
+                }
+
+                if (callback != null) {
+                    callback.accept(true);
+                }
+            } catch (SQLException e) {
+                if (callback != null) {
+                    callback.accept(false);
+                }
                 Database.LOGGER.log(Level.WARNING, "Error during database query", e);
             }
         });
